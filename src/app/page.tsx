@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 type ApodData = {
   title: string;
@@ -10,33 +11,48 @@ type ApodData = {
 };
 
 export default async function Home() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-  const res = await fetch(`${baseUrl}/api/apod`, { cache: "no-store" });
-  const data: ApodData = await res.json();
+  const apiKey = process.env.NASA_API_KEY || "DEMO_KEY";
+  const end = new Date();
+  const start = new Date();
+  start.setDate(end.getDate() - 8);
+
+  const res = await fetch(
+    `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&start_date=${start.toISOString().split("T")[0]}&end_date=${end.toISOString().split("T")[0]}`,
+    { cache: "no-store" }
+  );
+  const data: ApodData[] = await res.json();
 
   return (
-    <main className="min-h-screen bg-black text-white p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-2">{data.title}</h1>
-      <p className="text-sm text-gray-400 mb-6">{data.date}</p>
+    <main className="min-h-screen bg-black text-white p-8 max-w-6xl mx-auto">
+      <h1 className="text-3xl font-bold mb-8">NASA Picture of the Day</h1>
 
-      {data.media_type === "image" ? (
-        <Image
-          src={data.url}
-          alt={data.title}
-          width={960}
-          height={600}
-          className="w-full rounded-lg mb-6"
-        />
-      ) : (
-        <iframe
-          src={data.url}
-          title={data.title}
-          className="w-full aspect-video rounded-lg mb-6"
-          allowFullScreen
-        />
-      )}
-
-      <p className="text-gray-300 leading-relaxed">{data.explanation}</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {data.map((apod) => (
+          <Link
+            key={apod.date}
+            href={`/apod/${apod.date}`}
+            className="rounded-lg overflow-hidden bg-gray-900 hover:bg-gray-800 transition-colors"
+          >
+            {apod.media_type === "image" ? (
+              <Image
+                src={apod.url}
+                alt={apod.title}
+                width={400}
+                height={300}
+                className="w-full h-48 object-cover"
+              />
+            ) : (
+              <div className="w-full h-48 bg-gray-700 flex items-center justify-center text-gray-400">
+                Video
+              </div>
+            )}
+            <div className="p-4">
+              <h2 className="font-semibold mb-1 line-clamp-1">{apod.title}</h2>
+              <p className="text-sm text-gray-400">{apod.date}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
     </main>
   );
 }
