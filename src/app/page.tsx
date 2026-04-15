@@ -17,7 +17,7 @@ export default async function Home() {
 
   const res = await fetch(
     `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&start_date=${start.toISOString().split("T")[0]}&end_date=${end.toISOString().split("T")[0]}`,
-    { cache: "no-store" }
+    { next: { revalidate: 3600 } } // Cache for 1 hour
   );
 
   if (!res.ok) {

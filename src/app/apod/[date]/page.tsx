@@ -20,16 +20,21 @@ export default async function ApodDetail({
   const apiKey = process.env.NASA_API_KEY || "DEMO_KEY";
   const res = await fetch(
     `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${date}`,
-    { next: { revalidate: 86400 } }
+    { next: { revalidate: 86400 } },
   );
 
   if (!res.ok) {
     return (
       <main className="min-h-screen bg-black text-white p-8 max-w-4xl mx-auto">
-        <Link href="/" className="text-blue-400 hover:underline mb-6 inline-block">
+        <Link
+          href="/"
+          className="text-blue-400 hover:underline mb-6 inline-block"
+        >
           &larr; Back
         </Link>
-        <p className="text-gray-400">NASA API is temporarily unavailable. Please try again later.</p>
+        <p className="text-gray-400">
+          NASA API is temporarily unavailable. Please try again later.
+        </p>
       </main>
     );
   }
@@ -39,7 +44,10 @@ export default async function ApodDetail({
   return (
     <main className="min-h-screen bg-black text-white p-8 max-w-4xl mx-auto">
       <MarkViewed date={date} />
-      <Link href="/" className="text-blue-400 hover:underline mb-6 inline-block">
+      <Link
+        href="/"
+        className="text-blue-400 hover:underline mb-6 inline-block"
+      >
         &larr; Back
       </Link>
 
