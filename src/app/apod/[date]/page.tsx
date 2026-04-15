@@ -11,6 +11,29 @@ type ApodData = {
   media_type: string;
 };
 
+export async function generateStaticParams() {
+  const apiKey = process.env.NASA_API_KEY || "DEMO_KEY";
+  const end = new Date();
+  const start = new Date();
+  start.setDate(end.getDate() - 20);
+
+  const res = await fetch(
+    `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&start_date=${start.toISOString().split("T")[0]}&end_date=${end.toISOString().split("T")[0]}`,
+    { next: { revalidate: 3600 } },
+  );
+
+  if (!res.ok) {
+    return [];
+  }
+
+  const allData: ApodData[] = await res.json();
+  const imageData = allData.filter((apod) => apod.media_type === "image");
+
+  return imageData.map((apod) => ({
+    date: apod.date,
+  }));
+}
+
 export default async function ApodDetail({
   params,
 }: {
