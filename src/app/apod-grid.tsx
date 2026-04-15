@@ -16,14 +16,22 @@ export default function ApodGrid({ items }: { items: ApodData[] }) {
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("viewedApods") || "[]");
     setViewed(new Set(stored));
+    
+    // Listen for storage changes from other tabs/windows
+    const handleStorageChange = () => {
+      const updated = JSON.parse(localStorage.getItem("viewedApods") || "[]");
+      setViewed(new Set(updated));
+    };
+    
+    window.addEventListener("storage", handleStorageChange);
+    // Also listen for custom event from same window
+    window.addEventListener("viewedUpdate", handleStorageChange);
+    
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("viewedUpdate", handleStorageChange);
+    };
   }, []);
-
-  function handleClick(date: string) {
-    const updated = new Set(viewed);
-    updated.add(date);
-    localStorage.setItem("viewedApods", JSON.stringify([...updated]));
-    setViewed(updated);
-  }
 
   function handleClear() {
     localStorage.removeItem("viewedApods");
@@ -45,7 +53,6 @@ export default function ApodGrid({ items }: { items: ApodData[] }) {
         <Link
           key={apod.date}
           href={`/apod/${apod.date}`}
-          onClick={() => handleClick(apod.date)}
           className="rounded-lg overflow-hidden bg-gray-900 hover:bg-gray-800 transition-colors"
         >
           <div className="relative">

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import MarkViewed from "./mark-viewed";
 
 type ApodData = {
   title: string;
@@ -19,7 +20,7 @@ export default async function ApodDetail({
   const apiKey = process.env.NASA_API_KEY || "DEMO_KEY";
   const res = await fetch(
     `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${date}`,
-    { cache: "no-store" }
+    { next: { revalidate: 86400 } }
   );
 
   if (!res.ok) {
@@ -37,6 +38,7 @@ export default async function ApodDetail({
 
   return (
     <main className="min-h-screen bg-black text-white p-8 max-w-4xl mx-auto">
+      <MarkViewed date={date} />
       <Link href="/" className="text-blue-400 hover:underline mb-6 inline-block">
         &larr; Back
       </Link>
