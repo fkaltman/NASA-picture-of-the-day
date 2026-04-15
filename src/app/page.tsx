@@ -23,7 +23,7 @@ export default async function Home() {
   if (!res.ok) {
     return (
       <main className="min-h-screen bg-black text-white p-8 max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4">NASA Picture of the Day</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mb-4">NASA Picture of the Day 🚀</h1>
         <p className="text-gray-400">
           NASA API is temporarily unavailable. Please try again later.
         </p>
@@ -36,7 +36,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-black text-white p-8 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">NASA Picture of the Day</h1>
+      <h1 className="text-2xl md:text-3xl font-bold mb-8">NASA Picture of the Day 🚀</h1>
 
       <ApodGrid items={data} />
     </main>
