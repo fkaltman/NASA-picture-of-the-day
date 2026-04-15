@@ -21,6 +21,18 @@ export default async function ApodDetail({
     `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${date}`,
     { cache: "no-store" }
   );
+
+  if (!res.ok) {
+    return (
+      <main className="min-h-screen bg-black text-white p-8 max-w-4xl mx-auto">
+        <Link href="/" className="text-blue-400 hover:underline mb-6 inline-block">
+          &larr; Back
+        </Link>
+        <p className="text-gray-400">NASA API is temporarily unavailable. Please try again later.</p>
+      </main>
+    );
+  }
+
   const data: ApodData = await res.json();
 
   return (
