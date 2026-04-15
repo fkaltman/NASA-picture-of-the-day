@@ -17,14 +17,16 @@ export default async function Home() {
 
   const res = await fetch(
     `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&start_date=${start.toISOString().split("T")[0]}&end_date=${end.toISOString().split("T")[0]}`,
-    { next: { revalidate: 3600 } } // Cache for 1 hour
+    { next: { revalidate: 3600 } }, // Cache for 1 hour
   );
 
   if (!res.ok) {
     return (
       <main className="min-h-screen bg-black text-white p-8 max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold mb-4">NASA Picture of the Day</h1>
-        <p className="text-gray-400">NASA API is temporarily unavailable. Please try again later.</p>
+        <p className="text-gray-400">
+          NASA API is temporarily unavailable. Please try again later.
+        </p>
       </main>
     );
   }
