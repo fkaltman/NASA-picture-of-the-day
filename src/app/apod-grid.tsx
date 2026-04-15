@@ -57,8 +57,8 @@ export default function ApodGrid({ items }: { items: ApodData[] }) {
               className={`w-full h-48 object-cover ${viewed.has(apod.date) ? "opacity-50" : ""}`}
             />
             {viewed.has(apod.date) && (
-              <span className="absolute top-2 right-2 text-lg">
-                👀
+              <span className="absolute top-2 right-2 bg-gray-800 text-gray-400 text-xs px-2 py-1 rounded">
+                Viewed
               </span>
             )}
           </div>
