@@ -1,5 +1,4 @@
-import Image from "next/image";
-import Link from "next/link";
+import ApodGrid from "./apod-grid";
 
 type ApodData = {
   title: string;
@@ -37,27 +36,7 @@ export default async function Home() {
     <main className="min-h-screen bg-black text-white p-8 max-w-6xl mx-auto">
       <h1 className="text-3xl font-bold mb-8">NASA Picture of the Day</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data.map((apod) => (
-          <Link
-            key={apod.date}
-            href={`/apod/${apod.date}`}
-            className="rounded-lg overflow-hidden bg-gray-900 hover:bg-gray-800 transition-colors"
-          >
-            <Image
-              src={apod.url}
-              alt={apod.title}
-              width={400}
-              height={300}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4">
-              <h2 className="font-semibold mb-1 line-clamp-1">{apod.title}</h2>
-              <p className="text-sm text-gray-400">{apod.date}</p>
-            </div>
-          </Link>
-        ))}
-      </div>
+      <ApodGrid items={data} />
     </main>
   );
 }
