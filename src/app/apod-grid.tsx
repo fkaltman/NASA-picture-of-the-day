@@ -25,8 +25,22 @@ export default function ApodGrid({ items }: { items: ApodData[] }) {
     setViewed(updated);
   }
 
+  function handleClear() {
+    localStorage.removeItem("viewedApods");
+    setViewed(new Set());
+  }
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <>
+      {viewed.size > 0 && (
+        <button
+          onClick={handleClear}
+          className="mb-6 text-sm text-gray-400 hover:text-white transition-colors"
+        >
+          Clear viewed
+        </button>
+      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {items.map((apod) => (
         <Link
           key={apod.date}
@@ -55,5 +69,6 @@ export default function ApodGrid({ items }: { items: ApodData[] }) {
         </Link>
       ))}
     </div>
+    </>
   );
 }
